@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Socrates op Sneakers — KiVa AI-training</title>
+<meta name="description" content="Leer Socratisch denken met AI-coach Zephyr. KiVa-training voor leerlingen.">
+<meta property="og:title" content="Socrates op Sneakers">
+<meta property="og:description" content="AI-coach Zephyr leert je Socratisch denken via KiVa-missies.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0f1e;--bg2:#111827;--bg3:#1a2336;--bg4:#1f2d44;
+  --grn:#1D9E75;--grn2:#0f6e56;--grn3:rgba(29,158,117,0.15);--grn4:rgba(29,158,117,0.08);
+  --amb:#d97706;--amb2:rgba(217,119,6,0.15);
+  --blu:#378ADD;--blu2:rgba(55,138,221,0.15);
+  --pur:#7F77DD;--pur2:rgba(127,119,221,0.15);
+  --red:#e24b4a;
+  --txt:#f1f5f9;--txt2:#94a3b8;--txt3:#64748b;
+  --bdr:#1e2d42;--bdr2:#2a3f5a;
+  --font:'Space Grotesk',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);font-family:var(--font);color:var(--txt);min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
+.phone-wrap{width:100%;max-width:420px;min-height:100vh;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.phone-wrap::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--bdr) 1px,transparent 1px),linear-gradient(90deg,var(--bdr) 1px,transparent 1px);background-size:32px 32px;opacity:0.2;pointer-events:none;z-index:0}
+.statusbar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 8px;position:relative;z-index:10}
+.statusbar-time{font-size:13px;font-weight:600;color:var(--txt2);font-family:var(--mono)}
+.statusbar-icons{display:flex;gap:6px;align-items:center}
+.statusbar-icons i{font-size:14px;color:var(--txt3)}
+.eq-mini{display:flex;align-items:flex-end;gap:2px;height:16px}
+.eq-b{width:3px;background:var(--grn);border-radius:1px;opacity:0.8;transition:height 0.1s}
+.screen{flex:1;position:relative;z-index:1;overflow-y:auto;overflow-x:hidden;padding-bottom:72px}
+.tab{display:none;animation:fadeUp 0.22s ease}
+.tab.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;display:flex;background:rgba(17,24,39,0.96);backdrop-filter:blur(12px);border-top:0.5px solid var(--bdr2);padding:10px 0 max(8px,env(safe-area-inset-bottom));z-index:100}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;padding:4px 0;transition:transform 0.15s}
+.ni:active{transform:scale(0.9)}
+.ni i{font-size:21px;color:var(--txt3);transition:color 0.15s}
+.ni span{font-size:9px;color:var(--txt3);font-family:var(--font);font-weight:500;letter-spacing:0.3px;transition:color 0.15s}
+.ni.on i,.ni.on span{color:var(--grn)}
+.top-bar{display:flex;align-items:center;padding:12px 16px 10px;gap:10px}
+.back-btn{width:32px;height:32px;border-radius:50%;background:var(--bg3);border:0.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background 0.15s}
+.back-btn:hover{background:var(--bg4)}
+.back-btn i{font-size:15px;color:var(--txt2)}
+.top-title{font-size:15px;font-weight:600;color:var(--txt)}
+.pts-chip{margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:var(--grn3);border:0.5px solid var(--grn);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--grn);font-weight:600}
+.home-hdr{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-ico{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:1.5px solid var(--grn);display:flex;align-items:center;justify-content:center}
+.brand-ico i{font-size:18px;color:var(--grn)}
+.brand-name{font-size:14px;font-weight:700;color:var(--txt)}
+.brand-sub{font-size:10px;color:var(--txt3);margin-top:1px}
+.notif-btn{width:34px;height:34px;border-radius:50%;background:var(--bg2);border:0.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.hero{margin:0 16px 14px;background:var(--bg3);border-radius:18px;border:0.5px solid var(--bdr2);padding:16px;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:var(--grn3)}
+.av-wrap{position:relative;flex-shrink:0;width:80px;height:100px}
+.pulse-ring{position:absolute;border-radius:50%;border:1px solid var(--grn);opacity:0}
+.playing-av .pulse-ring{animation:pr 1.4s ease-out infinite}
+.playing-av .pulse-ring:nth-child(2){animation-delay:0.45s}
+@keyframes pr{0%{opacity:0;transform:scale(0.8)}50%{opacity:0.4}100%{opacity:0;transform:scale(1.2)}}
+.playing-av svg{animation:bob 0.9s ease-in-out infinite alternate}
+@keyframes bob{0%{transform:translateY(0)}100%{transform:translateY(-5px)}}
+.hero-bubble{flex:1;z-index:1}
+.hero-name{font-size:10px;color:var(--grn);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.hero-txt{font-size:13px;color:var(--txt);line-height:1.55}
+.listen-btn{display:inline-flex;align-items:center;gap:4px;margin-top:8px;background:none;border:none;color:var(--blu);font-size:11px;cursor:pointer;font-family:var(--font);font-weight:500;padding:0}
+.listen-btn i{font-size:14px}
+.stats{display:flex;gap:8px;margin:0 16px 16px}
+.stat{flex:1;background:var(--bg3);border-radius:12px;padding:10px 8px;text-align:center;border:0.5px solid var(--bdr)}
+.stat-n{font-size:22px;font-weight:700;color:var(--grn);font-family:var(--mono)}
+.stat-l{font-size:10px;color:var(--txt3);margin-top:2px;font-weight:500}
+.section-lbl{padding:0 16px 8px;font-size:10px;color:var(--txt3);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 16px 16px}
+.mod{background:var(--bg3);border-radius:14px;padding:14px;cursor:pointer;border:1px solid var(--bdr);transition:border-color 0.15s,transform 0.15s}
+.mod:hover{border-color:var(--bdr2);transform:translateY(-1px)}
+.mod:active{transform:scale(0.97)}
+.mod-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px;font-size:16px}
+.mod-n{font-size:12px;font-weight:600;color:var(--txt)}
+.mod-s{font-size:10px;color:var(--txt3);margin-top:2px}
+.dark-ta,.dark-inp{width:100%;background:var(--bg3);border:0.5px solid var(--bdr2);border-radius:10px;padding:12px;color:var(--txt);font-size:13px;font-family:var(--font);outline:none;transition:border-color 0.15s}
+.dark-ta{resize:none;min-height:72px}
+.dark-ta::placeholder,.dark-inp::placeholder{color:var(--txt3)}
+.dark-ta:focus,.dark-inp:focus{border-color:var(--grn)}
+.big-btn{width:100%;padding:14px;border-radius:12px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity 0.15s,transform 0.1s;letter-spacing:0.2px}
+.big-btn:active{transform:scale(0.98);opacity:0.9}
+.big-btn:disabled{opacity:0.45;cursor:not-allowed}
+.btn-grn{background:var(--grn);color:#fff}
+.btn-amb{background:var(--amb);color:#fff}
+.btn-pur{background:var(--pur);color:#fff}
+.btn-dim{background:var(--bg3);border:0.5px solid var(--bdr2);color:var(--txt2)}
+.btn-red-out{background:transparent;border:1.5px solid var(--red);color:var(--red)}
+.card{background:var(--bg3);border-radius:14px;border:0.5px solid var(--bdr2);padding:14px;margin:0 16px 12px}
+.sect-lbl2{font-size:10px;color:var(--txt3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.ok-box{background:rgba(29,158,117,0.08);border:0.5px solid var(--grn);border-radius:12px;padding:14px;margin:0 16px 12px;font-size:13px;color:var(--txt);line-height:1.55}
+.err-box{background:rgba(226,75,74,0.08);border:0.5px solid var(--red);border-radius:12px;padding:12px;margin:0 16px 10px;font-size:12px;color:#f87171;line-height:1.45}
+.kiva-tip{background:var(--grn4);border:0.5px solid var(--grn);border-radius:10px;padding:11px 13px;margin:0 16px 12px}
+.kiva-tip-lbl{font-size:10px;color:var(--grn);font-weight:600;margin-bottom:3px}
+.kiva-tip-txt{font-size:11px;color:var(--txt2);line-height:1.45}
+.notes-row{display:flex;gap:7px;margin:0 16px 12px}
+.note{flex:1;border-radius:9px;padding:9px 8px;font-size:11px;font-weight:600;cursor:pointer;line-height:1.35;border:none;transition:transform 0.15s}
+.note:hover{transform:rotate(-1deg) scale(1.04)}
+.note.y{background:#fef08a;color:#713f12}
+.note.b{background:#bfdbfe;color:#1e3a5f}
+.note.p{background:#fce7f3;color:#831843}
+.ldr-labels{display:flex;justify-content:space-between;margin:0 16px 6px}
+.ldr-lbl{font-size:11px;color:var(--txt3);font-weight:600;transition:color 0.2s}
+.ldr-lbl.on{color:var(--txt)}
+.clouds{display:flex;gap:6px;margin:0 16px 12px;flex-wrap:wrap}
+.cloud{background:var(--bg3);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--txt3);border:0.5px solid var(--bdr2);transition:all 0.2s}
+.cloud.on{border-color:var(--blu);color:#93c5fd;background:var(--blu2)}
+.ldr-track{margin:0 16px 2px;height:4px;background:linear-gradient(to right,#3b82f6,#ef4444);border-radius:2px}
+input.ldr-inp{display:block;width:calc(100% - 32px);margin:0 16px 14px;accent-color:var(--grn);cursor:pointer}
+.ldr-focus{display:flex;align-items:center;gap:12px;background:var(--bg3);border-radius:12px;padding:13px;margin:0 16px 14px;border:0.5px solid var(--bdr2)}
+.magnify{width:46px;height:46px;border-radius:50%;background:var(--bg4);border:1.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.magnify i{font-size:20px;color:var(--txt3)}
+.focus-val{font-size:11px;color:var(--grn);font-weight:600;margin-bottom:3px}
+.focus-txt{font-size:12px;color:var(--txt2);line-height:1.45;font-style:italic}
+.ldr-cards{display:flex;gap:8px;margin:0 16px 14px}
+.ldr-card{flex:1;background:var(--bg3);border-radius:10px;padding:10px;text-align:center;border:0.5px solid var(--bdr)}
+.ldr-card-lbl{font-size:10px;margin-bottom:4px;font-weight:600}
+.ldr-card-ex{font-size:11px;color:var(--txt2);line-height:1.4;font-style:italic}
+.coach-box{background:var(--bg3);border-radius:14px;padding:14px;margin:0 16px 12px;border:0.5px solid var(--bdr2)}
+.coach-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.coach-av{width:38px;height:38px;border-radius:50%;background:var(--blu2);border:1.5px solid var(--blu);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.coach-av i{font-size:17px;color:var(--blu)}
+.coach-nm{font-size:13px;font-weight:600;color:var(--txt)}
+.coach-badge{display:inline-block;font-size:9px;background:var(--blu2);color:#93c5fd;border-radius:10px;padding:2px 8px;margin-top:2px;font-weight:500}
+.sc-inv-pad{padding:0 16px}
+.fb-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:9px}
+.pill-grn{background:rgba(29,158,117,0.2);color:#5DCAA5}
+.pill-amb{background:rgba(217,119,6,0.2);color:#fbbf24}
+.fb-tip{font-size:12px;color:var(--txt3);font-style:italic;margin-bottom:14px;line-height:1.5}
+.brug-opts{padding:0 16px}
+.brug-opt{width:100%;text-align:left;background:var(--bg3);border:0.5px solid var(--bdr2);border-radius:11px;padding:12px 14px;color:var(--txt2);font-size:12px;cursor:pointer;margin-bottom:8px;line-height:1.45;font-family:var(--font);transition:border-color 0.15s,background 0.15s}
+.brug-opt:hover{background:var(--bg4)}
+.brug-opt.sel{border-color:var(--amb);background:var(--amb2);color:var(--txt)}
+.brug-opt.ok{border-color:var(--grn);color:#5dcaa5;background:var(--grn4)}
+.brug-opt.no{border-color:var(--red);color:#f87171;background:rgba(226,74,74,0.06)}
+.wall-cards{display:flex;flex-direction:column;gap:9px;margin:12px 16px 16px}
+.wall-card{background:var(--bg3);border-radius:12px;padding:13px 15px;border-left:3px solid var(--grn);border-top:0.5px solid var(--bdr2);border-right:0.5px solid var(--bdr2);border-bottom:0.5px solid var(--bdr2);animation:fadeUp 0.25s ease}
+.wall-q{font-size:13px;color:var(--txt);line-height:1.55;margin-bottom:5px}
+.wall-meta{font-size:10px;color:var(--txt3)}
+.wall-likes{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--txt3);margin-top:8px;cursor:pointer;border:none;background:none;font-family:var(--font);padding:0;transition:color 0.15s}
+.wall-likes.liked{color:var(--grn)}
+.wall-likes i{font-size:15px}
+.profile-hero{text-align:center;padding:20px 16px 14px}
+.av-big{width:76px;height:76px;border-radius:50%;background:var(--bg3);border:2px solid var(--grn);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.prof-name{font-size:17px;font-weight:700;color:var(--txt)}
+.prof-sub{font-size:11px;color:var(--txt3);margin-top:3px}
+.badge-row{display:flex;gap:8px;justify-content:center;margin:12px 16px 16px;flex-wrap:wrap}
+.badge-item{background:var(--bg3);border-radius:12px;padding:10px 14px;text-align:center;border:0.5px solid var(--bdr);min-width:80px;transition:border-color 0.3s,opacity 0.3s}
+.badge-item.earned{border-color:var(--grn)}
+.badge-ico{font-size:20px;color:var(--grn)}
+.badge-lbl{font-size:10px;color:var(--txt3);margin-top:4px;font-weight:500}
+.prog-bars{margin:0 16px 16px}
+.prog-item{margin-bottom:14px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px}
+.prog-lbl span:first-child{color:var(--txt2);font-weight:500}
+.prog-lbl span:last-child{color:var(--grn);font-weight:600;font-family:var(--mono)}
+.prog-track{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.prog-fill{height:5px;background:var(--grn);border-radius:3px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1)}
+.total-pts-card{background:var(--bg3);border-radius:14px;padding:18px;text-align:center;border:0.5px solid var(--bdr2);margin:0 16px 16px}
+.total-pts-n{font-size:36px;font-weight:700;color:var(--grn);font-family:var(--mono)}
+.total-pts-l{font-size:11px;color:var(--txt3);margin-top:3px;font-weight:500}
+.loader{text-align:center;padding:32px;color:var(--txt3);font-size:13px}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid var(--bg4);border-top-color:var(--grn);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:-4px;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sp8{height:8px}.sp16{height:16px}
+.pad16{padding:0 16px}
+@media(min-width:480px){
+  body{background:#060b16;padding:20px 0;align-items:center;min-height:100vh}
+  .phone-wrap{min-height:auto;border-radius:32px;border:1.5px solid var(--bdr2);overflow:hidden;max-height:820px}
+  .phone-wrap::before{border-radius:32px}
+  .screen{max-height:calc(820px - 130px)}
+  .bottom-nav{border-radius:0 0 32px 32px;position:sticky;bottom:0;transform:none;left:auto}
+}
+</style>
+</head>
+<body>
+<div class="phone-wrap">
+
+<div class="statusbar">
+  <span class="statusbar-time" id="clock">9:41</span>
+  <div class="statusbar-icons">
+    <div class="eq-mini" id="eq-mini">
+      <div class="eq-b" style="height:40%"></div>
+      <div class="eq-b" style="height:70%"></div>
+      <div class="eq-b" style="height:50%"></div>
+      <div class="eq-b" style="height:85%"></div>
+      <div class="eq-b" style="height:60%"></div>
+    </div>
+    <i class="ti ti-wifi"></i>
+    <i class="ti ti-battery"></i>
+  </div>
+</div>
+
+<div class="screen" id="screen">
+
+  <!-- HOME -->
+  <div class="tab on" id="tab-home">
+    <div class="home-hdr">
+      <div class="brand">
+        <div class="brand-ico"><i class="ti ti-shoe"></i></div>
+        <div><div class="brand-name">Socrates op Sneakers</div><div class="brand-sub">KiVa AI-training</div></div>
+      </div>
+      <div class="notif-btn"><i class="ti ti-bell" style="font-size:16px;color:#64748b"></i></div>
+    </div>
+
+    <div class="hero">
+      <div class="av-wrap" id="hero-av-wrap">
+        <div class="pulse-ring" style="width:76px;height:76px;top:12px;left:2px"></div>
+        <div class="pulse-ring" style="width:96px;height:96px;top:2px;left:-8px"></div>
+        <svg width="80" height="100" viewBox="0 0 140 175" style="position:relative;z-index:2">
+          <ellipse cx="70" cy="168" rx="40" ry="6" fill="#060c1a" opacity="0.6"/>
+          <rect x="42" y="120" width="22" height="42" rx="5" fill="#152a47"/>
+          <rect x="76" y="120" width="22" height="42" rx="5" fill="#152a47"/>
+          <rect x="36" y="150" width="32" height="14" rx="7" fill="#f1f5f9"/>
+          <rect x="36" y="158" width="32" height="6" rx="3" fill="#374151"/>
+          <rect x="38" y="151" width="28" height="2" rx="1" fill="#1D9E75"/>
+          <rect x="72" y="150" width="32" height="14" rx="7" fill="#f1f5f9"/>
+          <rect x="72" y="158" width="32" height="6" rx="3" fill="#374151"/>
+          <rect x="74" y="151" width="28" height="2" rx="1" fill="#1D9E75"/>
+          <rect x="38" y="78" width="64" height="52" rx="12" fill="#f1f5f9"/>
+          <path d="M38 86 Q24 92 22 118 L40 118 L40 84Z" fill="#cbd5e1"/>
+          <path d="M102 86 Q116 92 118 118 L100 118 L100 84Z" fill="#cbd5e1"/>
+          <ellipse cx="70" cy="58" rx="30" ry="32" fill="#c68642"/>
+          <path d="M40 44 Q43 20 70 18 Q97 20 100 44 Q106 32 103 18 Q94 0 70 0 Q46 0 37 18 Q34 32 40 44Z" fill="#1a0a00"/>
+          <path d="M40 44 Q37 56 38 68 Q39 44 50 40Z" fill="#1a0a00"/>
+          <path d="M100 44 Q103 56 102 68 Q101 44 90 40Z" fill="#1a0a00"/>
+          <ellipse cx="58" cy="56" rx="6" ry="7" fill="#fff"/>
+          <ellipse cx="82" cy="56" rx="6" ry="7" fill="#fff"/>
+          <ellipse cx="59" cy="58" rx="4" ry="4.5" fill="#3b1f00"/>
+          <ellipse cx="83" cy="58" rx="4" ry="4.5" fill="#3b1f00"/>
+          <ellipse cx="60" cy="56" rx="1.8" ry="1.8" fill="#0f172a"/>
+          <ellipse cx="84" cy="56" rx="1.8" ry="1.8" fill="#0f172a"/>
+          <ellipse cx="61" cy="55" rx="1.2" ry="1.2" fill="#fff" opacity="0.85"/>
+          <ellipse cx="85" cy="55" rx="1.2" ry="1.2" fill="#fff" opacity="0.85"/>
+          <path d="M62 72 Q70 77 78 72" fill="none" stroke="#a0692e" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="50" cy="62" rx="6" ry="4" fill="#b07030" opacity="0.3"/>
+          <ellipse cx="90" cy="62" rx="6" ry="4" fill="#b07030" opacity="0.3"/>
+          <rect x="44" y="28" width="52" height="9" rx="4.5" fill="#1e293b"/>
+          <rect x="42" y="34" width="10" height="16" rx="5" fill="#334155"/>
+          <rect x="88" y="34" width="10" height="16" rx="5" fill="#334155"/>
+          <rect x="43" y="35" width="8" height="14" rx="4" fill="#1D9E75"/>
+          <rect x="89" y="35" width="8" height="14" rx="4" fill="#1D9E75"/>
+        </svg>
+      </div>
+      <div class="hero-bubble">
+        <div class="hero-name">Zephyr — AI coach</div>
+        <div class="hero-txt" id="home-txt">Hoi! Klaar om oordelen te parkeren en goede vragen te stellen?</div>
+        <button class="listen-btn" onclick="spreek(document.getElementById('home-txt').textContent)">
+          <i class="ti ti-volume"></i> Hoor Zephyr
+        </button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="h-pts">0</div><div class="stat-l">punten</div></div>
+      <div class="stat"><div class="stat-n" id="h-mis">0</div><div class="stat-l">missies</div></div>
+      <div class="stat"><div class="stat-n" id="h-vr">0</div><div class="stat-l">vragen</div></div>
+    </div>
+
+    <div class="section-lbl">Modules</div>
+    <div class="mod-grid">
+      <div class="mod" onclick="goTab('park')">
+        <div class="mod-ic" style="background:var(--grn3)"><i class="ti ti-parking" style="color:#1D9E75"></i></div>
+        <div class="mod-n">De Parkeerplaats</div><div class="mod-s">Dump je oordelen</div>
+      </div>
+      <div class="mod" onclick="goTab('ladder')">
+        <div class="mod-ic" style="background:var(--blu2)"><i class="ti ti-ladder" style="color:#378ADD"></i></div>
+        <div class="mod-n">Vraag-ladder</div><div class="mod-s">Abstract ↔ Concreet</div>
+      </div>
+      <div class="mod" onclick="goTab('scenario')">
+        <div class="mod-ic" style="background:var(--amb2)"><i class="ti ti-bolt" style="color:#d97706"></i></div>
+        <div class="mod-n">KiVa-missie</div><div class="mod-s">AI-scenario training</div>
+      </div>
+      <div class="mod" onclick="goTab('brug')">
+        <div class="mod-ic" style="background:var(--pur2)"><i class="ti ti-bridge" style="color:#7F77DD"></i></div>
+        <div class="mod-n">Brug-bouwer</div><div class="mod-s">Vraag toestemming</div>
+      </div>
+    </div>
+    <div class="sp16"></div>
+  </div>
+
+  <!-- PARKEERPLAATS -->
+  <div class="tab" id="tab-park">
+    <div class="top-bar">
+      <div class="back-btn" onclick="goTab('home')"><i class="ti ti-arrow-left"></i></div>
+      <span class="top-title"><i class="ti ti-parking" style="color:#1D9E75;margin-right:5px"></i>De Parkeerplaats</span>
+      <div class="pts-chip"><i class="ti ti-star"></i> <span id="p-pts">0</span></div>
+    </div>
+    <div style="text-align:center;padding:8px 0 14px">
+      <i class="ti ti-brain" style="font-size:38px;color:#1D9E75"></i>
+      <div style="font-size:14px;font-weight:700;color:var(--txt);margin-top:6px">Wat zit je dwars?</div>
+      <div style="font-size:11px;color:var(--txt3);margin-top:3px">Dump hier je oordeel of frustratie vóór het gesprek</div>
+    </div>
+    <div id="park-in">
+      <div class="card">
+        <div class="sect-lbl2">Jouw gedachte</div>
+        <textarea class="dark-ta" id="park-txt" rows="3" placeholder="Bijv: 'Hij doet altijd zo irritant...'"></textarea>
+      </div>
+      <div style="padding:0 16px 6px;font-size:11px;color:var(--txt3);font-weight:500">Klik een voorbeeld:</div>
+      <div class="notes-row">
+        <div class="note y" onclick="fillNote('Die juf is gemeen')">Die juf is gemeen</div>
+        <div class="note b" onclick="fillNote('Waarom mag ik niet meedoen?')">Waarom mag ik niet meedoen?</div>
+        <div class="note p" onclick="fillNote('Hij pest me altijd')">Hij pest me altijd</div>
+      </div>
+      <div class="kiva-tip">
+        <div class="kiva-tip-lbl"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>KiVa tip</div>
+        <div class="kiva-tip-txt">Parkeer eerst → dan pas praten = minder ruzie en meer begrip!</div>
+      </div>
+      <div class="pad16"><button class="big-btn btn-grn" onclick="doeParkeer()"><i class="ti ti-lock"></i> Parkeer in de kluis</button></div>
+    </div>
+    <div id="park-ok" style="display:none">
+      <div style="text-align:center;padding:16px 0 12px">
+        <i class="ti ti-lock" style="font-size:40px;color:#1D9E75"></i>
+        <div style="font-size:14px;font-weight:700;color:var(--txt);margin-top:8px">Veilig geparkeerd!</div>
+      </div>
+      <div class="ok-box" id="park-resp" style="font-style:italic"><span class="spin" style="border-top-color:#1D9E75"></span> Zephyr denkt na...</div>
+      <div class="sp8"></div>
+      <div class="pad16"><button class="big-btn btn-grn" onclick="resetPark()"><i class="ti ti-plus"></i> Nieuw oordeel parkeren</button></div>
+    </div>
+    <div class="sp16"></div>
+  </div>
+
+  <!-- VRAAG-LADDER -->
+  <div class="tab" id="tab-ladder">
+    <div class="top-bar">
+      <div class="back-btn" onclick="goTab('home')"><i class="ti ti-arrow-left"></i></div>
+      <span class="top-title"><i class="ti ti-ladder" style="color:#378ADD;margin-right:5px"></i>De Vraag-ladder</span>
+    </div>
+    <div style="padding:0 16px 12px;font-size:12px;color:var(--txt2);line-height:1.55">Beweeg de slider om te schakelen tussen abstract (waarden) en concreet (feiten).</div>
+    <div class="ldr-labels">
+      <span class="ldr-lbl on" id="ll-abs">Abstract</span>
+      <span class="ldr-lbl" id="ll-con">Concreet</span>
+    </div>
+    <div class="clouds" id="clouds">
+      <div class="cloud on">vriendschap</div>
+      <div class="cloud on">eerlijkheid</div>
+      <div class="cloud on">respect</div>
+      <div class="cloud">feiten</div>
+      <div class="cloud">tijdstip</div>
+      <div class="cloud">gedrag</div>
+    </div>
+    <div class="ldr-track"></div>
+    <input type="range" class="ldr-inp" min="0" max="100" value="15" step="1" id="ldr" oninput="moveLadder(this.value)">
+    <div class="ldr-focus">
+      <div class="magnify"><i class="ti ti-zoom-in"></i></div>
+      <div>
+        <div class="focus-val" id="ldr-fv">Meningen &amp; waarden</div>
+        <div class="focus-txt" id="ldr-ft">Wat vind jij eerlijk in deze situatie?</div>
+      </div>
+    </div>
+    <div class="ldr-cards">
+      <div class="ldr-card">
+        <div class="ldr-card-lbl" style="color:#3b82f6">Abstract (boven)</div>
+        <div class="ldr-card-ex">"Wat vind jij eerlijk?"</div>
+      </div>
+      <div class="ldr-card">
+        <div class="ldr-card-lbl" style="color:#ef4444">Concreet (onder)</div>
+        <div class="ldr-card-ex">"Wat zei hij precies om 10:45?"</div>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:var(--txt3);font-style:italic;padding:0 16px 16px" id="ldr-ex"></div>
+  </div>
+
+  <!-- SCENARIO -->
+  <div class="tab" id="tab-scenario">
+    <div class="top-bar">
+      <div class="back-btn" onclick="goTab('home')"><i class="ti ti-arrow-left"></i></div>
+      <span class="top-title"><i class="ti ti-bolt" style="color:#d97706;margin-right:5px"></i>KiVa-missie</span>
+      <div class="pts-chip"><i class="ti ti-star"></i> <span id="sc-pts">0</span></div>
+    </div>
+    <div style="padding:0 16px 10px;font-size:10px;color:var(--amb);letter-spacing:1.5px;text-transform:uppercase;font-weight:600">Actieve missie</div>
+    <div id="sc-load" class="loader"><span class="spin" style="border-top-color:#d97706"></span>Zephyr bedenkt een missie...</div>
+    <div id="sc-content" style="display:none">
+      <div class="coach-box">
+        <div class="coach-row">
+          <div class="coach-av"><i class="ti ti-shoe"></i></div>
+          <div>
+            <div class="coach-nm">Zephyr</div>
+            <div class="coach-badge">AI-coach</div>
+          </div>
+          <button class="listen-btn" onclick="spreek(huidigBub)" style="margin-left:auto"><i class="ti ti-volume"></i></button>
+        </div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.6" id="sc-bub"></div>
+      </div>
+      <div id="sc-inv" class="sc-inv-pad">
+        <textarea class="dark-ta" id="sc-ans" style="margin-bottom:10px" placeholder="Typ hier jouw open, Socratische vraag..."></textarea>
+        <button class="big-btn btn-amb" onclick="doeBeoordeel()"><i class="ti ti-send"></i> Stuur antwoord</button>
+      </div>
+      <div id="sc-fb" style="display:none;padding:12px 16px 0">
+        <span class="fb-pill" id="sc-pill"></span>
+        <div class="fb-tip" id="sc-tip"></div>
+        <button class="big-btn btn-amb" onclick="nieuweMissie()"><i class="ti ti-refresh"></i> Volgende missie</button>
+      </div>
+    </div>
+    <div class="sp16"></div>
+  </div>
+
+  <!-- BRUG-BOUWER -->
+  <div class="tab" id="tab-brug">
+    <div class="top-bar">
+      <div class="back-btn" onclick="goTab('home')"><i class="ti ti-arrow-left"></i></div>
+      <span class="top-title"><i class="ti ti-bridge" style="color:#7F77DD;margin-right:5px"></i>De Brug-bouwer</span>
+    </div>
+    <div style="padding:0 16px 14px;font-size:12px;color:var(--txt2);line-height:1.55">Je hebt goed geluisterd. Hoe vraag je toestemming om je inzicht te delen?</div>
+    <div id="br-kies" class="brug-opts">
+      <button class="brug-opt" id="bo1" onclick="kiesBrug(1)">"Ik heb een idee, mag ik dat met je delen?"</button>
+      <button class="brug-opt" id="bo2" onclick="kiesBrug(2)">"Luister, ik weet precies wat jij nu moet doen..."</button>
+      <button class="brug-opt" id="bo3" onclick="kiesBrug(3)">"Vind je het fijn als ik meedenk over een oplossing?"</button>
+      <button class="brug-opt" id="bo4" onclick="kiesBrug(4)">"Dat deed je echt niet slim, ik zou het anders doen."</button>
+      <div class="sp8"></div>
+      <button class="big-btn btn-pur" onclick="testBrug()"><i class="ti ti-hammer"></i> Bouw de brug</button>
+    </div>
+    <div id="br-open" style="display:none;padding:0 16px">
+      <div class="ok-box" style="margin:0 0 12px"><i class="ti ti-lock-open"></i> De brug is gebouwd! Deel nu je inzicht.</div>
+      <textarea class="dark-ta" id="br-ins" rows="3" style="margin-bottom:10px" placeholder="Typ hier je inzicht of feedback..."></textarea>
+      <div id="br-ai-resp" style="display:none;background:var(--bg3);border-radius:10px;padding:11px;font-size:12px;color:var(--txt2);line-height:1.55;margin-bottom:10px;font-style:italic;border:0.5px solid var(--bdr2)"></div>
+      <button class="big-btn btn-grn" id="br-send" onclick="doeInzicht()"><i class="ti ti-send"></i> Deel inzicht</button>
+    </div>
+    <div id="br-no" style="display:none">
+      <div class="err-box"><i class="ti ti-alert-triangle" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Dit is een oordeel of ongevraagd advies. Vraag eerst toestemming!</div>
+      <div class="pad16"><button class="big-btn btn-red-out" onclick="resetBrug()"><i class="ti ti-refresh"></i> Probeer opnieuw</button></div>
+    </div>
+    <div id="br-klaar" style="display:none;text-align:center;padding:28px 16px">
+      <i class="ti ti-check" style="font-size:44px;color:#1D9E75"></i>
+      <div style="font-size:15px;font-weight:700;color:var(--txt);margin-top:12px">Inzicht gedeeld!</div>
+      <div style="font-size:12px;color:var(--txt3);margin-top:4px">+20 punten verdiend</div>
+      <div class="sp16"></div>
+      <button class="big-btn btn-pur" onclick="resetBrug()"><i class="ti ti-refresh"></i> Nieuwe situatie</button>
+    </div>
+    <div class="sp16"></div>
+  </div>
+
+  <!-- VERWONDER WALL -->
+  <div class="tab" id="tab-wall">
+    <div class="top-bar">
+      <div class="back-btn" onclick="goTab('home')"><i class="ti ti-arrow-left"></i></div>
+      <span class="top-title"><i class="ti ti-bulb" style="color:#d97706;margin-right:5px"></i>Verwonder-wall</span>
+    </div>
+    <div style="padding:0 16px 12px;font-size:12px;color:var(--txt2);line-height:1.55">Deel hier je beste open vraag met de klas!</div>
+    <div class="pad16" style="margin-bottom:12px">
+      <input class="dark-inp" id="wall-inp" placeholder="Typ hier een open vraag voor de wall..." maxlength="120" style="margin-bottom:8px">
+      <button class="big-btn btn-amb" onclick="postWall()"><i class="ti ti-send"></i> Post op de wall</button>
+    </div>
+    <div class="wall-cards" id="wall-cards"></div>
+    <div class="sp16"></div>
+  </div>
+
+  <!-- PROFIEL -->
+  <div class="tab" id="tab-profiel">
+    <div class="top-bar" style="justify-content:center">
+      <span class="top-title">Mijn profiel</span>
+    </div>
+    <div class="profile-hero">
+      <div class="av-big">
+        <svg width="50" height="62" viewBox="0 0 140 175">
+          <rect x="42" y="120" width="22" height="42" rx="5" fill="#152a47"/>
+          <rect x="76" y="120" width="22" height="42" rx="5" fill="#152a47"/>
+          <rect x="36" y="150" width="32" height="14" rx="7" fill="#f1f5f9"/>
+          <rect x="38" y="151" width="28" height="2" rx="1" fill="#1D9E75"/>
+          <rect x="72" y="150" width="32" height="14" rx="7" fill="#f1f5f9"/>
+          <rect x="74" y="151" width="28" height="2" rx="1" fill="#1D9E75"/>
+          <rect x="38" y="78" width="64" height="52" rx="12" fill="#f1f5f9"/>
+          <ellipse cx="70" cy="58" rx="30" ry="32" fill="#c68642"/>
+          <path d="M40 44 Q43 20 70 18 Q97 20 100 44 Q106 32 103 18 Q94 0 70 0 Q46 0 37 18 Q34 32 40 44Z" fill="#1a0a00"/>
+          <ellipse cx="58" cy="56" rx="5" ry="6" fill="#fff"/>
+          <ellipse cx="82" cy="56" rx="5" ry="6" fill="#fff"/>
+          <ellipse cx="59" cy="58" rx="3.5" ry="4" fill="#3b1f00"/>
+          <ellipse cx="83" cy="58" rx="3.5" ry="4" fill="#3b1f00"/>
+          <path d="M62 72 Q70 77 78 72" fill="none" stroke="#a0692e" stroke-width="1.8" stroke-linecap="round"/>
+          <rect x="44" y="28" width="52" height="9" rx="4.5" fill="#1e293b"/>
+          <rect x="42" y="34" width="10" height="16" rx="5" fill="#1D9E75"/>
+          <rect x="88" y="34" width="10" height="16" rx="5" fill="#1D9E75"/>
+        </svg>
+      </div>
+      <div class="prof-name">Socrates-leerling</div>
+      <div class="prof-sub">KiVa-trainee &nbsp;·&nbsp; Level <span id="prof-level">1</span></div>
+    </div>
+    <div class="badge-row">
+      <div class="badge-item" id="badge-park"><div class="badge-ico"><i class="ti ti-lock"></i></div><div class="badge-lbl">Parkeer-pro</div></div>
+      <div class="badge-item" id="badge-vr" style="opacity:0.35"><div class="badge-ico"><i class="ti ti-star"></i></div><div class="badge-lbl">Vraag-meester</div></div>
+      <div class="badge-item" id="badge-br" style="opacity:0.35"><div class="badge-ico"><i class="ti ti-bridge"></i></div><div class="badge-lbl">Brug-bouwer</div></div>
+    </div>
+    <div class="prog-bars">
+      <div class="prog-item">
+        <div class="prog-lbl"><span>Parkeerplaats</span><span id="pp-pct">0%</span></div>
+        <div class="prog-track"><div class="prog-fill" id="pp-bar" style="width:0%"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-lbl"><span>Socratische vragen</span><span id="vr-pct">0%</span></div>
+        <div class="prog-track"><div class="prog-fill" id="vr-bar" style="width:0%"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-lbl"><span>Brug-bouwer</span><span id="br-pct">0%</span></div>
+        <div class="prog-track"><div class="prog-fill" id="br-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="total-pts-card">
+      <div class="total-pts-n" id="prof-pts">0</div>
+      <div class="total-pts-l">totale punten</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="ni on" id="ni-home" onclick="goTab('home')"><i class="ti ti-home"></i><span>Home</span></button>
+  <button class="ni" id="ni-wall" onclick="goTab('wall')"><i class="ti ti-bulb"></i><span>Wall</span></button>
+  <button class="ni" id="ni-scenario" onclick="goTab('scenario')"><i class="ti ti-bolt"></i><span>Missies</span></button>
+  <button class="ni" id="ni-profiel" onclick="goTab('profiel')"><i class="ti ti-user"></i><span>Profiel</span></button>
+</div>
+
+</div>
+<script>
+let pts=0,missies=0,vragen=0,parkeringen=0,bruggen=0;
+let huidigBub='',selBrug=null,eqInt=null,audioCtx=null;
+const wallData=[
+  {q:'Wat bedoel je precies als je zegt dat de baan vol is?',likes:4,liked:false},
+  {q:'Hoe voel jij je als je buitengesloten wordt?',likes:7,liked:false},
+  {q:'Wat zou jij zelf doen in zijn situatie?',likes:2,liked:false}
+];
+
+function updateClock(){const d=new Date();const h=d.getHours().toString().padStart(2,'0');const m=d.getMinutes().toString().padStart(2,'0');document.getElementById('clock').textContent=h+':'+m;}
+updateClock();setInterval(updateClock,30000);
+
+function goTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+name).classList.add('on');
+  const ni=document.getElementById('ni-'+name);if(ni)ni.classList.add('on');
+  document.getElementById('screen').scrollTop=0;
+  if(name==='scenario')nieuweMissie();
+  if(name==='wall')renderWall();
+  if(name==='profiel')updateProfiel();
+}
+
+async function callAI(sys,msg){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:sys,messages:[{role:'user',content:msg}]})});
+  const d=await r.json();return d.content[0].text;
+}
+
+function getACtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playBeat(){
+  try{
+    const c=getACtx(),g=c.createGain();g.gain.value=0.07;g.connect(c.destination);
+    const now=c.currentTime;
+    function kick(t){const o=c.createOscillator(),gk=c.createGain();o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(35,t+0.12);gk.gain.setValueAtTime(0.8,t);gk.gain.exponentialRampToValueAtTime(0.001,t+0.22);o.connect(gk);gk.connect(g);o.start(t);o.stop(t+0.25);}
+    function snr(t){const buf=c.createBuffer(1,Math.floor(c.sampleRate*0.12),c.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*0.4;const s=c.createBufferSource(),gs=c.createGain();gs.gain.setValueAtTime(0.35,t);gs.gain.exponentialRampToValueAtTime(0.001,t+0.12);s.buffer=buf;s.connect(gs);gs.connect(g);s.start(t);}
+    const b=60/90;
+    for(let i=0;i<4;i++){kick(now+i*b*4);kick(now+i*b*4+b*2);snr(now+i*b*4+b);snr(now+i*b*4+b*3);}
+  }catch(e){}
+}
+function playWin(){
+  try{
+    const c=getACtx(),g=c.createGain();g.gain.value=0.14;g.connect(c.destination);
+    [523,659,784,1047].forEach((f,i)=>{const o=c.createOscillator(),gn=c.createGain();const t=c.currentTime+0.05+i*0.15;o.type='square';o.frequency.value=f;gn.gain.setValueAtTime(0.22,t);gn.gain.exponentialRampToValueAtTime(0.001,t+0.3);o.connect(gn);gn.connect(g);o.start(t);o.stop(t+0.35);});
+  }catch(e){}
+}
+function spreek(txt){
+  if(!txt)return;
+  if('speechSynthesis' in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='nl-NL';u.pitch=0.85;u.rate=0.88;window.speechSynthesis.speak(u);}
+  playBeat();startEQ();setTimeout(stopEQ,3500);
+}
+function startEQ(){
+  if(eqInt)clearInterval(eqInt);
+  document.getElementById('hero-av-wrap').classList.add('playing-av');
+  eqInt=setInterval(()=>{document.querySelectorAll('.eq-b').forEach(b=>{b.style.height=(18+Math.random()*78)+'%';});},130);
+}
+function stopEQ(){
+  if(eqInt){clearInterval(eqInt);eqInt=null;}
+  document.getElementById('hero-av-wrap').classList.remove('playing-av');
+  [40,70,50,85,60].forEach((h,i)=>{const bars=document.querySelectorAll('.eq-b');if(bars[i])bars[i].style.height=h+'%';});
+}
+
+function fillNote(t){document.getElementById('park-txt').value=t;}
+async function doeParkeer(){
+  const v=document.getElementById('park-txt').value.trim();if(!v)return;
+  document.getElementById('park-in').style.display='none';
+  document.getElementById('park-ok').style.display='block';
+  document.getElementById('park-resp').innerHTML='<span class="spin" style="border-top-color:#1D9E75"></span> Zephyr denkt na...';
+  spreek('Je oordeel is geparkeerd. Goed gedaan!');
+  try{
+    const sys='Je bent Zephyr, AI-coach in Socrates op Sneakers. Reageer op het geparkeerde oordeel in 2 korte zinnen in het Nederlands. Erken het gevoel en moedig aan om open het gesprek in te gaan. Warm en direct.';
+    const t=await callAI(sys,'Geparkeerd oordeel: "'+v+'"');
+    document.getElementById('park-resp').textContent=t;spreek(t);
+  }catch(e){document.getElementById('park-resp').textContent='Goed gedaan! Je oordeel staat veilig geparkeerd. Ga nu open het gesprek in.';}
+  pts+=10;parkeringen++;updateStats();
+}
+function resetPark(){document.getElementById('park-txt').value='';document.getElementById('park-ok').style.display='none';document.getElementById('park-in').style.display='block';}
+
+function moveLadder(v){
+  v=parseInt(v);const isAbs=v<35,isCon=v>65;
+  document.getElementById('ll-abs').classList.toggle('on',!isCon);
+  document.getElementById('ll-con').classList.toggle('on',isCon);
+  const cls=document.getElementById('clouds').querySelectorAll('.cloud');
+  [0,1,2].forEach(i=>cls[i].classList.toggle('on',isAbs));
+  [3,4,5].forEach(i=>cls[i].classList.toggle('on',isCon));
+  let fv,ft,ex;
+  if(isAbs){fv='Meningen & waarden';ft='Wat vind jij eerlijk in deze situatie?';ex='"Wat betekent vriendschap voor jou?"';}
+  else if(isCon){fv='Feiten & waarnemingen';ft='Wat gebeurde er precies, en wanneer?';ex='"Wat zei hij precies om 10:45?"';}
+  else{fv='In balans';ft='Verbind de feiten met het gevoel.';ex='"Wat merkte je, en wat voel jij daarbij?"';}
+  document.getElementById('ldr-fv').textContent=fv;
+  document.getElementById('ldr-ft').textContent=ft;
+  document.getElementById('ldr-ex').textContent='Bijv: '+ex;
+}
+
+async function nieuweMissie(){
+  document.getElementById('sc-load').style.display='block';
+  document.getElementById('sc-content').style.display='none';
+  document.getElementById('sc-fb').style.display='none';
+  document.getElementById('sc-inv').style.display='block';
+  document.getElementById('sc-ans').value='';
+  try{
+    const sys='Je bent Zephyr, AI-coach in Socrates op Sneakers. Genereer een korte unieke schoolsituatie (2-3 zinnen) over uitsluiting, roddels of groepsdruk. Eindig met: wat is een open vraag die je hier kunt stellen? Spreek de leerling direct aan. Alleen de tekst.';
+    const t=await callAI(sys,'Genereer een nieuwe KiVa-missie. Maak hem anders dan vorige keren.');
+    huidigBub=t;document.getElementById('sc-bub').textContent=t;
+    document.getElementById('sc-load').style.display='none';document.getElementById('sc-content').style.display='block';
+    spreek(t);
+  }catch(e){
+    huidigBub="Er zit een groepje op het plein te skaten. Als Daan aankomt, draait de groep zich om: 'De baan is nu even vol.' Wat is een open vraag die je hier kunt stellen?";
+    document.getElementById('sc-bub').textContent=huidigBub;
+    document.getElementById('sc-load').style.display='none';document.getElementById('sc-content').style.display='block';
+  }
+}
+async function doeBeoordeel(){
+  const ant=document.getElementById('sc-ans').value.trim();if(!ant)return;
+  document.getElementById('sc-inv').style.display='none';
+  const ld=document.createElement('div');ld.className='loader';ld.innerHTML='<span class="spin" style="border-top-color:#d97706"></span>Zephyr beoordeelt...';
+  document.getElementById('sc-content').appendChild(ld);
+  try{
+    const sys='Je bent Zephyr. Beoordeel de input van de leerling. Geef ALLEEN dit JSON-object terug: {"is_open":true/false,"tip":"<korte tip in het Nederlands>"}';
+    const raw=await callAI(sys,'Scenario: "'+huidigBub+'"\nAntwoord: "'+ant+'"');
+    ld.remove();
+    let data;try{const m=raw.match(/\{[\s\S]*\}/);data=JSON.parse(m?m[0]:raw);}catch(e){data={is_open:ant.includes('?')&&!ant.toLowerCase().match(/moet|stop|doe gewoon/),tip:'Denk na of er een oordeel in je vraag zit.'};}
+    const pill=document.getElementById('sc-pill');
+    pill.textContent=data.is_open?'Socratische wijsheid!':'Oordeel gespot — probeer opnieuw';
+    pill.className='fb-pill '+(data.is_open?'pill-grn':'pill-amb');
+    document.getElementById('sc-tip').textContent='Tip: '+data.tip;
+    document.getElementById('sc-fb').style.display='block';
+    if(data.is_open){pts+=15;vragen++;missies++;playWin();spreek('Socratische wijsheid! Geweldig gedaan!');}
+    else spreek('Oordeel gespot. Probeer een open vraag zonder oordeel.');
+    updateStats();
+  }catch(e){ld.remove();document.getElementById('sc-fb').style.display='block';}
+}
+
+function kiesBrug(id){selBrug=id;[1,2,3,4].forEach(i=>document.getElementById('bo'+i).className='brug-opt'+(i===id?' sel':''));}
+function testBrug(){
+  if(!selBrug)return;
+  const ok=selBrug===1||selBrug===3;
+  [1,2,3,4].forEach(i=>document.getElementById('bo'+i).className='brug-opt'+(i===selBrug?(ok?' ok':' no'):''));
+  setTimeout(()=>{
+    if(ok){document.getElementById('br-kies').style.display='none';document.getElementById('br-open').style.display='block';spreek('Goed! De brug ligt er. Deel nu je inzicht.');}
+    else{document.getElementById('br-kies').style.display='none';document.getElementById('br-no').style.display='block';spreek('Dat is een oordeel. Vraag eerst toestemming!');}
+  },400);
+}
+async function doeInzicht(){
+  const ins=document.getElementById('br-ins').value.trim();if(!ins)return;
+  const btn=document.getElementById('br-send');btn.disabled=true;btn.innerHTML='<span class="spin"></span>';
+  try{
+    const sys='Je bent Zephyr. De leerling heeft toestemming gevraagd en een inzicht gedeeld. Reageer bemoedigend in 1-2 zinnen in het Nederlands. Alleen de tekst.';
+    const t=await callAI(sys,'Inzicht: "'+ins+'"');
+    document.getElementById('br-ai-resp').textContent=t;document.getElementById('br-ai-resp').style.display='block';
+    spreek(t);
+    setTimeout(()=>{document.getElementById('br-open').style.display='none';document.getElementById('br-klaar').style.display='block';playWin();pts+=20;bruggen++;updateStats();},2200);
+  }catch(e){document.getElementById('br-open').style.display='none';document.getElementById('br-klaar').style.display='block';pts+=20;bruggen++;updateStats();}
+}
+function resetBrug(){
+  selBrug=null;[1,2,3,4].forEach(i=>document.getElementById('bo'+i).className='brug-opt');
+  document.getElementById('br-ins').value='';document.getElementById('br-ai-resp').style.display='none';
+  const btn=document.getElementById('br-send');btn.disabled=false;btn.innerHTML='<i class="ti ti-send"></i> Deel inzicht';
+  document.getElementById('br-kies').style.display='block';document.getElementById('br-open').style.display='none';
+  document.getElementById('br-no').style.display='none';document.getElementById('br-klaar').style.display='none';
+}
+
+function renderWall(){
+  const c=document.getElementById('wall-cards');c.innerHTML='';
+  wallData.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='wall-card';
+    d.innerHTML='<div class="wall-q">'+item.q+'</div><div class="wall-meta">Gepost door een klasgenoot</div><button class="wall-likes'+(item.liked?' liked':'')+'" onclick="likeWall('+i+')"><i class="ti ti-heart" style="font-size:15px"></i> '+item.likes+'</button>';
+    c.appendChild(d);
+  });
+}
+function likeWall(i){wallData[i].liked=!wallData[i].liked;wallData[i].likes+=wallData[i].liked?1:-1;renderWall();}
+function postWall(){
+  const v=document.getElementById('wall-inp').value.trim();if(!v)return;
+  wallData.unshift({q:v,likes:0,liked:false});
+  document.getElementById('wall-inp').value='';renderWall();pts+=5;updateStats();
+  spreek('Super! Je open vraag staat op de wall!');
+}
+
+function updateStats(){
+  document.getElementById('h-pts').textContent=pts;
+  document.getElementById('h-mis').textContent=missies;
+  document.getElementById('h-vr').textContent=vragen;
+  document.getElementById('p-pts').textContent=pts;
+  document.getElementById('sc-pts').textContent=pts;
+}
+function updateProfiel(){
+  document.getElementById('prof-pts').textContent=pts;
+  document.getElementById('prof-level').textContent=Math.max(1,Math.floor(pts/50)+1);
+  const pp=Math.min(100,parkeringen*20),vp=Math.min(100,vragen*15),bp=Math.min(100,bruggen*25);
+  document.getElementById('pp-bar').style.width=pp+'%';document.getElementById('pp-pct').textContent=pp+'%';
+  document.getElementById('vr-bar').style.width=vp+'%';document.getElementById('vr-pct').textContent=vp+'%';
+  document.getElementById('br-bar').style.width=bp+'%';document.getElementById('br-pct').textContent=bp+'%';
+  if(parkeringen>=1)document.getElementById('badge-park').classList.add('earned');
+  if(vragen>=3){document.getElementById('badge-vr').classList.add('earned');document.getElementById('badge-vr').style.opacity='1';}
+  if(bruggen>=1){document.getElementById('badge-br').classList.add('earned');document.getElementById('badge-br').style.opacity='1';}
+}
+
+moveLadder(15);
+renderWall();
+</script>
+</body>
+</html>
